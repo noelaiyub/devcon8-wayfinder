@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wayfinder QR codes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+:root{--bg:#121338;--surface:#17194A;--line:rgba(226,222,255,.12);--ink:#F3F0FF;--dim:#A6A3CC;--teal:#5FE3D6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:14px;line-height:1.5}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 40px}
+h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:26px;margin:0 0 6px}
+h1 span{color:var(--teal)}
+.lede{color:var(--dim);margin:0 0 6px;max-width:70ch}
+.url{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--dim)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:20px}
+.card{background:#fff;color:#121338;border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px;break-inside:avoid}
+.card svg{width:100%;height:auto;max-width:150px}
+.card b{font-weight:500;text-align:center;font-size:14px}
+.card small{font-family:"IBM Plex Mono",monospace;font-size:10px;color:#6F6D9A}
+@media print{body{background:#fff;color:#000}.lede,.url{color:#333}.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Devcon 8 <span>Wayfinder</span> QR codes</h1>
+  <p class="lede">For testing: open this page on a laptop, open the Wayfinder on your phone, tap <b>Scan QR</b> and point at a code. Your spot jumps there. Scan a second code after walking to tune your step length. At the venue, print these and stick them on the matching signs.</p>
+  <p class="url" id="base"></p>
+  <div class="grid" id="grid"></div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+var ZONES=[["art", "Art Cohort"], ["blue", "Blue Discussion Zone"], ["hub13", "Hub 13"], ["hub14", "Hub 14"], ["tea1", "Tea & Coffee"], ["swag", "Swag Station"], ["music", "Music Stage"], ["game", "Game Zone"], ["booths", "Booth Hall"], ["teaB", "Tea & Coffee (booth hall)"], ["content", "Content Corner"], ["hub11", "Hub 11"], ["hub12", "Hub 12"], ["cowork", "Co-Working Zone"], ["tea2", "Tea & Coffee point (north)"], ["tea3", "Tea & Coffee point (south)"], ["hub10", "Hub 10"], ["hub9", "Hub 9"], ["hub8", "Hub 8"], ["hub7", "Hub 7"], ["pink", "Pink Discussion Zone"], ["quiet", "Quiet Co-Working Zone"], ["decomp", "De-Compression Zone"], ["s4seat", "Talk Stage 4 seating"], ["s4", "Talk Stage 4"], ["s1", "Talk Stage 1"], ["s2", "Talk Stage 2"], ["s3", "Talk Stage 3"], ["wc1", "Washroom (west)"], ["wc2", "Washroom (central)"], ["lift1", "Lifts (west)"], ["lift2", "Lifts (east)"], ["esc1", "Escalator (west)"], ["esc2", "Escalator (central)"], ["st1", "Stairs 1"], ["st2", "Stairs 2"], ["st3", "Stairs 3"], ["st4", "Stairs 4"], ["hub1", "Hub 1"], ["hub2", "Hub 2"], ["tea4", "Tea & Coffee point (west corridor)"], ["hub3", "Hub 3"], ["hub4", "Hub 4"], ["tea5", "Tea & Coffee point (central corridor)"], ["hub5", "Hub 5"], ["hub6", "Hub 6"], ["lunch", "Lunch"]];
+var base=location.href.replace(/qr\.html.*$/,"").replace(/#.*$/,"");
+document.getElementById("base").textContent="Codes point to "+base;
+var g=document.getElementById("grid");
+ZONES.forEach(function(z){
+  var url=base+"#at-"+z[0],q=qrcode(0,"M");q.addData(url);q.make();
+  var c=document.createElement("div");c.className="card";
+  c.innerHTML=q.createSvgTag({cellSize:4,margin:2,scalable:true});
+  var b=document.createElement("b");b.textContent=z[1];var s=document.createElement("small");s.textContent="#at-"+z[0];
+  c.appendChild(b);c.appendChild(s);g.appendChild(c);
+});
+</script>
+</body>
+</html>
